@@ -1,0 +1,25 @@
+# Update your .gitignore
+echo "
+# Database
+*.sqlite3
+*.db
+
+# Media files
+media/
+
+# Model files
+models/
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+*.egg-info/
+*.egg
+
+# Environments
+.env
+venv/
+.env/
+" > .gitignore

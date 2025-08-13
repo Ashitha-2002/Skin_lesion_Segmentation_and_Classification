@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="text-center mb-4">Analysis History</h1>
+
+{% for analysis in analyses %}
+<div class="col-md-4 mb-3">
+    <div class="card">
+        {% if analysis.image %}
+            <img src="{{ analysis.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+        {% endif %}
+        <div class="card-body">
+            <h6>{{ analysis.get_predicted_class_display }}</h6>
+            <p><small>{{ analysis.created_at }}</small></p>
+            <a href="{% url 'lesion_analyzer:results' analysis.id %}" class="btn btn-sm btn-primary">
+                View Results
+            </a>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}
