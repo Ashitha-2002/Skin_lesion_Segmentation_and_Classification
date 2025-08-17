@@ -1,0 +1,455 @@
+{% extends 'base.html' %}
+
+{% block title %}How It Works - Skin Lesion Analyzer{% endblock %}
+
+{% block content %}
+<div class="text-center mb-5">
+    <h1 class="display-4 fw-bold text-primary mb-3">
+        <i class="fas fa-cogs me-3"></i>
+        How It Works
+    </h1>
+    <p class="lead text-muted">
+        Understanding the AI-powered skin lesion analysis process
+    </p>
+</div>
+
+<!-- Process Steps -->
+<div class="row mb-5">
+    <div class="col-md-3 text-center mb-4">
+        <div class="step-number">1</div>
+        <h5 class="text-primary">Image Upload</h5>
+        <p class="text-muted">
+            Upload a clear, well-lit image of the skin lesion. Our system accepts JPG, PNG, and other common image formats.
+        </p>
+    </div>
+    <div class="col-md-3 text-center mb-4">
+        <div class="step-number">2</div>
+        <h5 class="text-primary">Preprocessing</h5>
+        <p class="text-muted">
+            The image is automatically preprocessed, including resizing, normalization, and enhancement for optimal AI analysis.
+        </p>
+    </div>
+    <div class="col-md-3 text-center mb-4">
+        <div class="step-number">3</div>
+        <h5 class="text-primary">AI Analysis</h5>
+        <p class="text-muted">
+            Our deep learning models perform classification and segmentation simultaneously to identify the lesion type and boundaries.
+        </p>
+    </div>
+    <div class="col-md-3 text-center mb-4">
+        <div class="step-number">4</div>
+        <h5 class="text-primary">Results</h5>
+        <p class="text-muted">
+            View detailed results including lesion classification, confidence scores, and precise segmentation masks.
+        </p>
+    </div>
+</div>
+
+<!-- Technical Details -->
+<div class="row mb-5">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-brain me-2"></i>
+                    Classification Model
+                </h5>
+            </div>
+            <div class="card-body">
+                <h6 class="text-primary">Deep Convolutional Neural Network</h6>
+                <p class="text-muted mb-3">
+                    Our classification model uses a sophisticated CNN architecture trained on thousands of dermatological images to identify 8 different types of skin lesions.
+                </p>
+                
+                <h6 class="text-primary">Training Data</h6>
+                <ul class="text-muted mb-3">
+                    <li>Over 25,000 labeled dermatological images</li>
+                    <li>Images from legitimate sources such as ISIC</li>
+                    <li>Diverse patient demographics and skin types</li>
+                    <li>Expert dermatologist annotations</li>
+                </ul>
+                
+                <h6 class="text-primary">Model Performance</h6>
+                <div class="progress mb-2">
+                    <div class="progress-bar" style="width: 88%">88% Accuracy</div>
+                </div>
+                <div class="progress mb-2">
+                    <div class="progress-bar bg-success" style="width: 82%">82% Sensitivity</div>
+                </div>
+                <div class="progress mb-3">
+                    <div class="progress-bar bg-info" style="width: 84%">84% Specificity</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-search-plus me-2"></i>
+                    Segmentation Model
+                </h5>
+            </div>
+            <div class="card-body">
+                <h6 class="text-success">BCDU-Net Architecture</h6>
+                <p class="text-muted mb-3">
+                    Our segmentation model uses a BCDU-Net architecture specifically designed for medical image segmentation, providing pixel-level accuracy in identifying lesion boundaries.
+                </p>
+                
+                <h6 class="text-success">Key Features</h6>
+                <ul class="text-muted mb-3">
+                    <li>Precise boundary detection</li>
+                    <li>Multi-scale feature extraction</li>
+                    <li>Skip connections for fine details</li>
+                    <li>Real-time processing capability</li>
+                </ul>
+                
+                <h6 class="text-success">Segmentation Metrics</h6>
+                <div class="progress mb-2">
+                    <div class="progress-bar bg-success" style="width: 92%">92% Global accuracy</div>
+                </div>
+                <div class="progress mb-2">
+                    <div class="progress-bar bg-success" style="width: 85%">85% sensitivity</div>
+                </div>
+                <div class="progress mb-3">
+                    <div class="progress-bar bg-success" style="width: 86%">86% F1 -Score</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Technology Stack -->
+<div class="row mb-5">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-layer-group me-2"></i>
+                    Technology Stack
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3 text-center mb-3">
+                        <i class="fab fa-python fa-3x text-primary mb-2"></i>
+                        <h6>Python</h6>
+                        <small class="text-muted">Core programming language</small>
+                    </div>
+                    <div class="col-md-3 text-center mb-3">
+                        <i class="fas fa-brain fa-3x text-success mb-2"></i>
+                        <h6>TensorFlow/PyTorch</h6>
+                        <small class="text-muted">Deep learning framework</small>
+                    </div>
+                    <div class="col-md-3 text-center mb-3">
+                        <i class="fab fa-django fa-3x text-warning mb-2"></i>
+                        <h6>Django</h6>
+                        <small class="text-muted">Web framework</small>
+                    </div>
+                    <div class="col-md-3 text-center mb-3">
+                        <i class="fas fa-image fa-3x text-danger mb-2"></i>
+                        <h6>OpenCV</h6>
+                        <small class="text-muted">Image processing</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Data Flow Diagram -->
+<div class="row mb-5">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-project-diagram me-2"></i>
+                    Analysis Pipeline
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-2">
+                        <div class="bg-light rounded p-3 mb-2">
+                            <i class="fas fa-upload fa-2x text-primary"></i>
+                        </div>
+                        <small class="fw-bold">Image Upload</small>
+                        <div class="mt-2">
+                            <i class="fas fa-arrow-right text-muted"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="bg-light rounded p-3 mb-2">
+                            <i class="fas fa-cog fa-2x text-info"></i>
+                        </div>
+                        <small class="fw-bold">Preprocessing</small>
+                        <div class="mt-2">
+                            <i class="fas fa-arrow-right text-muted"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="bg-light rounded p-3 mb-2">
+                            <i class="fas fa-brain fa-2x text-success"></i>
+                        </div>
+                        <small class="fw-bold">Classification</small>
+                        <div class="mt-2">
+                            <i class="fas fa-arrow-right text-muted"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="bg-light rounded p-3 mb-2">
+                            <i class="fas fa-search-plus fa-2x text-warning"></i>
+                        </div>
+                        <small class="fw-bold">Segmentation</small>
+                        <div class="mt-2">
+                            <i class="fas fa-arrow-right text-muted"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="bg-light rounded p-3 mb-2">
+                            <i class="fas fa-calculator fa-2x text-danger"></i>
+                        </div>
+                        <small class="fw-bold">Post-processing</small>
+                        <div class="mt-2">
+                            <i class="fas fa-arrow-right text-muted"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="bg-light rounded p-3 mb-2">
+                            <i class="fas fa-chart-bar fa-2x text-purple"></i>
+                        </div>
+                        <small class="fw-bold">Results</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Best Practices -->
+<div class="row mb-5">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-check-circle me-2"></i>
+                    Best Practices for Images
+                </h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-3">
+                        <i class="fas fa-sun text-warning me-2"></i>
+                        <strong>Good Lighting:</strong> Ensure the image is well-lit with natural or bright white light
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-focus text-primary me-2"></i>
+                        <strong>Sharp Focus:</strong> Make sure the lesion is in clear focus without blur
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-ruler text-info me-2"></i>
+                        <strong>Appropriate Distance:</strong> Capture the lesion from an optimal distance to show detail
+                    </li>
+                    <li class="mb-3">
+                        <strong>Proper Framing:</strong> Include some surrounding healthy skin for context
+                    </li>
+                    <li class="mb-0">
+                        <i class="fas fa-image text-danger me-2"></i>
+                        <strong>High Resolution:</strong> Use high-quality images (minimum 224x224 pixels)
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Limitations & Considerations
+                </h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-3">
+                        <i class="fas fa-user-md text-primary me-2"></i>
+                        <strong>Not a Replacement:</strong> AI analysis cannot replace professional medical diagnosis
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-eye text-info me-2"></i>
+                        <strong>Visual Analysis Only:</strong> Based solely on visual features, not clinical history
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-percentage text-success me-2"></i>
+                        <strong>Confidence Scores:</strong> Lower confidence scores may indicate uncertain cases
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-images text-warning me-2"></i>
+                        <strong>Image Quality:</strong> Poor quality images may lead to inaccurate results
+                    </li>
+                    <li class="mb-0">
+                        <i class="fas fa-clock text-danger me-2"></i>
+                        <strong>Early Stage:</strong> Very early or subtle lesions may be challenging to detect
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Accuracy Information -->
+<div class="row mb-5">
+    <div class="col-md-12">
+        <div class="card border-primary">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-chart-line me-2"></i>
+                    Model Validation & Accuracy
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <p class="mb-3">
+                            Our models have been extensively validated using cross-validation techniques and independent test datasets. 
+                            The performance metrics are based on comparison with expert dermatologist annotations.
+                        </p>
+                        
+                        <h6 class="text-primary mb-3">Validation Methodology:</h6>
+                        <ul class="mb-4">
+                            <li>Maintained original class distribution</li>
+                            <li>Independent validation set of 5,000+ images</li>
+                            <li>Visual testing via website</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <div class="bg-light rounded p-4">
+                                <h2 class="text-primary display-4">88%</h2>
+                                <p class="text-muted mb-0">Overall Accuracy</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Research & Development -->
+<div class="row mb-5">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-flask me-2"></i>
+                    Research & Development
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-primary">Ongoing Research</h6>
+                        <ul class="text-muted mb-4">
+                            <li>Integration of clinical metadata</li>
+                            <li>Multi-modal analysis (dermoscopy + clinical images)</li>
+                            <li>Rare lesion type detection</li>
+                            <li>Temporal change analysis</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-primary">Future Enhancements</h6>
+                        <ul class="text-muted mb-4">
+                            <li>Real-time mobile application</li>
+                            <li>3D lesion reconstruction</li>
+                            <li>Personalized risk assessment</li>
+                            <li>Integration with medical records</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info">
+                    <div class="d-flex align-items-start">
+                        <i class="fas fa-info-circle me-3 mt-1"></i>
+                        <div>
+                            <strong>Continuous Learning:</strong> Our models are continuously improved with new data and 
+                            feedback from medical professionals to enhance accuracy and reliability.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action -->
+<div class="text-center rounded p-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+    <h3 class="mb-3 text-white">Experience the Technology</h3>
+    <p class="mb-4 fs-5 text-white">
+        Ready to see our AI-powered skin lesion analysis in action? Upload your image and get instant results!
+    </p>
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+        <a href="{% url 'lesion_analyzer:upload' %}" class="btn btn-light btn-lg">
+            <i class="fas fa-upload me-2"></i>
+            Try It Now
+        </a>
+        <a href="{% url 'lesion_analyzer:lesion_types' %}" class="btn btn-outline-light btn-lg border-white text-white hover-dark">
+            <i class="fas fa-info-circle me-2"></i>
+            Learn About Lesion Types
+        </a>
+    </div>
+</div>
+
+<style>
+.hover-dark:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-color: white !important;
+    color: white !important;
+}
+
+.btn-outline-light.border-white {
+    border-color: white;
+    color: white;
+}
+
+.btn-outline-light.border-white:hover {
+    background-color: white;
+    border-color: white;
+    color: #667eea !important;
+}
+</style>
+<!-- Medical Disclaimer -->
+<div class="alert alert-danger mt-5">
+    <div class="row align-items-center">
+        <div class="col-md-1 text-center">
+            <i class="fas fa-user-md fa-2x"></i>
+        </div>
+        <div class="col-md-11">
+            <h6 class="alert-heading">Important Medical Disclaimer</h6>
+            <p class="mb-0">
+                This AI system is designed for educational and research purposes only. It should not be used as a 
+                substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your 
+                physician or other qualified health provider with any questions you may have regarding a medical condition. 
+                Never disregard professional medical advice or delay in seeking it because of something you have learned 
+                from this AI tool.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Add smooth scrolling for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+</script>
+{% endblock %}

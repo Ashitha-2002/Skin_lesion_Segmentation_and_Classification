@@ -3,21 +3,29 @@
 {% block content %}
 <h1 class="text-center mb-4">Analysis History</h1>
 
-{% for analysis in analyses %}
-<div class="col-md-4 mb-3">
-    <div class="card">
-        {% if analysis.image %}
-            <img src="{{ analysis.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;">
-        {% endif %}
-        <div class="card-body">
-            <h6>{{ analysis.get_predicted_class_display }}</h6>
-            <p><small>{{ analysis.created_at }}</small></p>
-            <a href="{% url 'lesion_analyzer:results' analysis.id %}" class="btn btn-sm btn-primary">
-                View Results
-            </a>
+{% if analyses %}
+<div class="container">
+    <div class="row g-4">
+        {% for analysis in analyses %}
+        <div class="col-12 col-sm-6 col-md-4">
+            <div class="card h-100">
+                <img src="{{ analysis.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <h6>{{ analysis.get_predicted_class_display }}</h6>
+                    <p><small>{{ analysis.created_at }}</small></p>
+                    <a href="{% url 'lesion_analyzer:results' analysis.id %}" class="btn btn-sm btn-primary">
+                        View Results
+                    </a>
+                </div>
+            </div>
         </div>
+        {% endfor %}
     </div>
 </div>
-{% endfor %}
-
+{% else %}
+<div class="text-center">
+    <p>No analyses yet.</p>
+    <a href="{% url 'lesion_analyzer:upload' %}" class="btn btn-primary">Upload First Image</a>
+</div>
+{% endif %}
 {% endblock %}
