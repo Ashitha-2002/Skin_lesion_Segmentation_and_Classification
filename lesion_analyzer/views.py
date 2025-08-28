@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.core.files.base import ContentFile
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 from .models import LesionAnalysis
 from .forms import ImageUploadForm
 from .ml_utils import LesionClassifier
 import io
-from .models import LesionAnalysis  
+import os
+from django.conf import settings
 
 
 def home(request):
@@ -183,3 +186,45 @@ def view_results(request, analysis_id):
 def analysis_history(request):
     analyses = LesionAnalysis.objects.all()[:20]
     return render(request, 'lesion_analyzer/history.html', {'analyses': analyses})
+
+@require_POST
+def delete_analysis(request, analysis_id):
+    """Delete an analysis and its associated files"""
+    try:
+        analysis = get_object_or_404(LesionAnalysis, id=analysis_id)
+        
+        # Delete the image files from disk
+        files_to_delete = []
+        
+        if analysis.image:
+            files_to_delete.append(analysis.image.path)
+        if analysis.segmentation_mask:
+            files_to_delete.append(analysis.segmentation_mask.path)
+        if analysis.segmented_region:
+            files_to_delete.append(analysis.segmented_region.path)
+        
+        # Delete files from filesystem
+        for file_path in files_to_delete:
+            if os.path.exists(file_path):
+                try:
+                    os.remove(file_path)
+                except OSError as e:
+                    print(f"Error deleting file {file_path}: {e}")
+        
+        # Delete the database entry
+        analysis.delete()
+        
+        # Return JSON response for AJAX requests
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'success': True, 'message': 'Analysis deleted successfully'})
+        
+        # For regular form submissions
+        messages.success(request, 'Analysis deleted successfully!')
+        return redirect('lesion_analyzer:history')
+        
+    except Exception as e:
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'success': False, 'message': f'Error deleting analysis: {str(e)}'})
+        
+        messages.error(request, f'Error deleting analysis: {str(e)}')
+        return redirect('lesion_analyzer:history')

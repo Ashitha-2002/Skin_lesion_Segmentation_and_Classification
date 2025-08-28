@@ -7,25 +7,282 @@
 <div class="container">
     <div class="row g-4">
         {% for analysis in analyses %}
-        <div class="col-12 col-sm-6 col-md-4">
+        <div class="col-12 col-sm-6 col-md-4" id="analysis-{{ analysis.id }}">
             <div class="card h-100">
-                <img src="{{ analysis.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;">
-                <div class="card-body">
+                <img src="{{ analysis.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="Analysis Image">
+                <div class="card-body d-flex flex-column">
                     <h6>{{ analysis.get_predicted_class_display }}</h6>
-                    <p><small>{{ analysis.created_at }}</small></p>
-                    <a href="{% url 'lesion_analyzer:results' analysis.id %}" class="btn btn-sm btn-primary">
-                        View Results
-                    </a>
+                    <p><small class="text-muted">{{ analysis.created_at }}</small></p>
+                    <div class="mt-auto">
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'lesion_analyzer:results' analysis.id %}" class="btn btn-sm btn-primary flex-fill">
+                                View Results
+                            </a>
+                            <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete({{ analysis.id }})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
 </div>
+
+<!-- Custom Delete Confirmation Modal -->
+<div id="deleteModal" class="custom-modal" style="display: none;">
+    <div class="custom-modal-backdrop"></div>
+    <div class="custom-modal-content">
+        <div class="custom-modal-header">
+            <h5>Confirm Delete</h5>
+            <button type="button" class="custom-close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="custom-modal-body">
+            <p>Are you sure you want to delete this analysis? This action cannot be undone.</p>
+            <p class="text-muted">This will permanently remove the analysis and all associated images from the system.</p>
+        </div>
+        <div class="custom-modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+        </div>
+    </div>
+</div>
+
+<style>
+.custom-modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.custom-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1050;
+    display: flex;
+    align-items: flex-start;  /* Align at top */
+    justify-content: center;  /* Center horizontally */
+    overflow-y: auto;         /* Allow scroll if modal is taller than screen */
+    padding-top: 60px;        /* Margin from top */
+}
+
+.custom-modal-content {
+    position: relative;
+    background: white;
+    border-radius: 0.375rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    margin-bottom: 60px; /* extra spacing if long */
+}
+
+
+.custom-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.custom-modal-header h5 {
+    margin: 0;
+    font-weight: 500;
+}
+
+.custom-close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.custom-close-btn:hover {
+    opacity: 1;
+}
+
+.custom-modal-body {
+    padding: 1.5rem;
+}
+
+.custom-modal-footer {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #dee2e6;
+}
+</style>
+
+<script>
+let analysisIdToDelete = null;
+
+function confirmDelete(analysisId) {
+    analysisIdToDelete = analysisId;
+    document.getElementById('deleteModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    document.getElementById('deleteModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+    analysisIdToDelete = null;
+}
+
+// Close modal when clicking backdrop
+document.addEventListener('click', function(e) {
+    if (e.target && e.target.classList.contains('custom-modal-backdrop')) {
+        closeModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && analysisIdToDelete !== null) {
+        closeModal();
+    }
+});
+
+document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+    if (analysisIdToDelete) {
+        deleteAnalysis(analysisIdToDelete);
+    }
+});
+
+function deleteAnalysis(analysisId) {
+    // Get CSRF token
+    const csrfToken = getCSRFToken();
+    
+    // Disable the delete button to prevent multiple clicks
+    const deleteBtn = document.getElementById('confirmDeleteBtn');
+    const originalText = deleteBtn.textContent;
+    deleteBtn.disabled = true;
+    deleteBtn.textContent = 'Deleting...';
+    
+    fetch(`/delete-analysis/${analysisId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken,
+            'X-Requested-With': 'XMLHttpRequest',
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            // Remove the card from the DOM
+            const analysisCard = document.getElementById(`analysis-${analysisId}`);
+            if (analysisCard) {
+                analysisCard.style.transition = 'opacity 0.3s';
+                analysisCard.style.opacity = '0';
+                setTimeout(() => {
+                    analysisCard.remove();
+                }, 300);
+            }
+            
+            // Close the modal
+            closeModal();
+            
+            // Show success message
+            showMessage('success', data.message || 'Analysis deleted successfully');
+            
+            // Check if no more analyses exist
+            setTimeout(() => {
+                const remainingCards = document.querySelectorAll('[id^="analysis-"]');
+                if (remainingCards.length === 0) {
+                    location.reload();
+                }
+            }, 500);
+        } else {
+            throw new Error(data.message || 'Failed to delete analysis');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showMessage('error', error.message || 'An error occurred while deleting the analysis.');
+        closeModal();
+    })
+    .finally(() => {
+        // Re-enable the delete button
+        deleteBtn.disabled = false;
+        deleteBtn.textContent = originalText;
+    });
+}
+
+// Function to get CSRF token
+function getCSRFToken() {
+    // Method 1: Try to get from cookie
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+        const [name, value] = cookie.trim().split('=');
+        if (name === 'csrftoken') {
+            return value;
+        }
+    }
+    
+    // Method 2: Try to get from meta tag (if you add it to base.html)
+    const metaTag = document.querySelector('meta[name="csrf-token"]');
+    if (metaTag) {
+        return metaTag.getAttribute('content');
+    }
+    
+    // Method 3: Try to get from hidden input (fallback)
+    const hiddenInput = document.querySelector('[name=csrfmiddlewaretoken]');
+    if (hiddenInput) {
+        return hiddenInput.value;
+    }
+    
+    // Method 4: Get from template variable (fallback)
+    return '{{ csrf_token }}';
+}
+
+function showMessage(type, message) {
+    // Create a simple alert div
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show position-fixed`;
+    alertDiv.style.top = '20px';
+    alertDiv.style.right = '20px';
+    alertDiv.style.zIndex = '9999';
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(alertDiv);
+    
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+        if (alertDiv.parentNode) {
+            alertDiv.remove();
+        }
+    }, 5000);
+}
+</script>
+
 {% else %}
 <div class="text-center">
     <p>No analyses yet.</p>
     <a href="{% url 'lesion_analyzer:upload' %}" class="btn btn-primary">Upload First Image</a>
 </div>
 {% endif %}
+
+<!-- Hidden form with CSRF token for AJAX requests -->
+<form style="display: none;">
+    {% csrf_token %}
+</form>
 {% endblock %}

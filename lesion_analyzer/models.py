@@ -29,3 +29,26 @@ class LesionAnalysis(models.Model):
     
     def __str__(self):
         return f'Analysis {self.id} - {self.get_predicted_class_display()}'
+    
+    def delete(self, *args, **kwargs):
+        """Override delete method to remove files from disk"""
+        # Store file paths before deleting the model instance
+        files_to_delete = []
+        
+        if self.image:
+            files_to_delete.append(self.image.path)
+        if self.segmentation_mask:
+            files_to_delete.append(self.segmentation_mask.path)
+        if self.segmented_region:
+            files_to_delete.append(self.segmented_region.path)
+        
+        # Delete the model instance first
+        super().delete(*args, **kwargs)
+        
+        # Then delete the files from disk
+        for file_path in files_to_delete:
+            if os.path.exists(file_path):
+                try:
+                    os.remove(file_path)
+                except OSError as e:
+                    print(f"Error deleting file {file_path}: {e}")
